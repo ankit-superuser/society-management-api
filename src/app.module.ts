@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SocietiesModule } from './societies/societies.module';
 
 
 
@@ -25,6 +26,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     UsersModule,
     RolesModule,
     DashboardModule,
+    SocietiesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
