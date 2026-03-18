@@ -84,4 +84,92 @@ async getRevenueGrowth() {
     revenue,
   }));
 }
+
+async getSubscriptionStatus() {
+  const result = await this.dataSource.query(`
+    SELECT
+      COUNT(*) FILTER (WHERE status = 'active')::int AS active,
+      COUNT(*) FILTER (WHERE status = 'expired')::int AS expired,
+      COUNT(*) FILTER (WHERE status = 'pending')::int AS pending,
+      COUNT(*) FILTER (WHERE status = 'cancelled')::int AS cancelled
+    FROM subscriptions
+  `);
+
+  return {
+    active: Number(result[0]?.active || 0),
+    expired: Number(result[0]?.expired || 0),
+    pending: Number(result[0]?.pending || 0),
+    cancelled: Number(result[0]?.cancelled || 0),
+  };
+}
+
+async getRecentSocieties() {
+  const result = await this.dataSource.query(`
+    SELECT
+      s.id,
+      s.name,
+      s.city,
+
+      -- users count
+      COUNT(sm.user_id)::int AS users,
+
+      -- plan name
+      p.name AS plan,
+
+      -- subscription status
+      sub.status
+
+    FROM societies s
+
+    LEFT JOIN society_members sm
+      ON sm.society_id = s.id
+
+    LEFT JOIN subscriptions sub
+      ON sub.society_id = s.id
+
+    LEFT JOIN plans p
+      ON p.id = sub.plan_id
+
+    GROUP BY s.id, s.name, s.city, p.name, sub.status
+
+    ORDER BY s.created_at DESC
+    LIMIT 5
+  `);
+
+  return {
+    societies: result.map((s: any) => ({
+      id: s.id,
+      name: s.name,
+      city: s.city,
+      users: Number(s.users || 0),
+      plan: s.plan || 'N/A',
+      status: s.status || 'inactive',
+    })),
+  };
+}
+
+
+async getRecentTickets() {
+  const result = await this.dataSource.query(`
+    SELECT
+      id,
+      subject,
+      status,
+      priority,
+      created_at
+    FROM support_tickets
+    ORDER BY created_at DESC
+    LIMIT 5
+  `);
+
+  return {
+    tickets: result.map((ticket: any) => ({
+      id: ticket.id,
+      title: ticket.subject,
+      status: ticket.status,
+      priority: ticket.priority,
+      createdAt: ticket.created_at,
+    })),
+  };
+}
 }

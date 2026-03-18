@@ -31,4 +31,45 @@ async getRevenueGrowth() {
     data,
   };
 }
+
+
+@Get('subscription-status')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('Super Admin', 'Society Admin')
+async getSubscriptionStatus() {
+  const data = await this.dashboardService.getSubscriptionStatus();
+
+  return {
+    message: 'Subscription status fetched successfully',
+    data,
+  };
+}
+
+@Get('recent-societies')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('Super Admin', 'Society Admin')
+async getRecentSocieties() {
+  const data = await this.dashboardService.getRecentSocieties();
+
+  return {
+    message: 'Recent societies fetched successfully',
+    data,
+  };
+}
+
+@Get('recent-tickets')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('Super Admin', 'Society Admin')
+async getRecentTickets() {
+  const data = await this.dashboardService.getRecentTickets();
+
+  return {
+    message: 'Recent tickets fetched successfully',
+    data,
+  };
+}
+
+
+
+
 }
