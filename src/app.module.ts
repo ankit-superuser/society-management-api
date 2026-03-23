@@ -8,6 +8,7 @@ import { RolesModule } from './roles/roles.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SocietiesModule } from './societies/societies.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { RevenueModule } from './revenue/revenue.module';
 
 
 
@@ -29,6 +30,7 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
     DashboardModule,
     SocietiesModule,
     SubscriptionsModule,
+    RevenueModule,
   ],
   controllers: [AppController],
   providers: [AppService],
