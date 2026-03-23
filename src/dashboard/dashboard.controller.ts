@@ -3,6 +3,9 @@ import { DashboardService } from './dashboard.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
+import { Body, Post, Req } from '@nestjs/common';
+import express from 'express';
+import { AddSocietyDto } from './dto/add-society.dto';
 
 @Controller('dashboard')
 export class DashboardController {
@@ -70,6 +73,17 @@ async getRecentTickets() {
 }
 
 
+@Post('add-societies')
+// @UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('Super Admin')
+async addSociety(@Body() body: AddSocietyDto, @Req() req: express.Request) {
+const userId = (req.user as any)?.id;
+  const data = await this.dashboardService.addSociety(body, userId);
 
+  return {
+    message: 'Society created successfully',
+    data,
+  };
+}
 
 }

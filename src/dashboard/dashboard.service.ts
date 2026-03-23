@@ -1,5 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { Subscription } from '../subscriptions/subscription.entity';
+
 
 @Injectable()
 export class DashboardService {
@@ -171,5 +174,80 @@ async getRecentTickets() {
       createdAt: ticket.created_at,
     })),
   };
+}
+
+
+
+async addSociety(body: any, userId: any) {
+  const { name, city, adminName, phone, planId, email } = body;
+
+  return await this.dataSource.transaction(async (manager) => {
+    // Check if email already exists
+    const existingUser = await manager.query(
+      `SELECT id FROM users WHERE email = $1`,
+      [email],
+    );
+    if (existingUser.length > 0) {
+      throw new BadRequestException('Email already exists');
+    }
+
+    // ⭐ 1. Create society
+    const societyResult = await manager.query(
+      `
+      INSERT INTO societies (name, city)
+      VALUES ($1, $2)
+      RETURNING *
+      `,
+      [name, city],
+    );
+
+    const society = societyResult[0];
+
+    // ⭐ 2. Generate password
+    const defaultPassword = 'Admin@123'; // or random
+    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+
+    // ⭐ 3. Create admin user
+    const userResult = await manager.query(
+      `
+      INSERT INTO users
+      (full_name, email, password_hash, phone, role_id, status)
+      VALUES ($1, $2, $3, $4, 2, 'active')
+      RETURNING *
+      `,
+      [adminName, email, hashedPassword, phone],
+    );
+
+    const adminUser = userResult[0];
+
+    // ⭐ 4. Link admin to society
+    await manager.query(
+      `
+      INSERT INTO society_members (society_id, user_id)
+      VALUES ($1, $2)
+      `,
+      [society.id, adminUser.id],
+    );
+
+    // ⭐ 5. Create subscription
+    const startDate = new Date();
+    const endDate = new Date();
+    endDate.setFullYear(endDate.getFullYear() + 1);
+
+    const subscription = await manager.save(Subscription, {
+      society_id: society.id,
+      plan_id: planId,
+      start_date: startDate,
+      end_date: endDate,
+      status: 'active',
+    });
+
+    return {
+      society,
+      adminUser,
+      subscription,
+      defaultPassword, // send to admin
+    };
+  });
 }
 }
