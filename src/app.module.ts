@@ -9,6 +9,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { SocietiesModule } from './societies/societies.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { RevenueModule } from './revenue/revenue.module';
+import { AnnouncementsModule } from './announcements/announcements.module';
 
 
 
@@ -31,6 +32,7 @@ import { RevenueModule } from './revenue/revenue.module';
     SocietiesModule,
     SubscriptionsModule,
     RevenueModule,
+    AnnouncementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
