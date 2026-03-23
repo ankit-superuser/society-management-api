@@ -10,6 +10,7 @@ import { SocietiesModule } from './societies/societies.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { RevenueModule } from './revenue/revenue.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
+import { LogsModule } from './logs/logs.module';
 
 
 
@@ -33,6 +34,7 @@ import { AnnouncementsModule } from './announcements/announcements.module';
     SubscriptionsModule,
     RevenueModule,
     AnnouncementsModule,
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
