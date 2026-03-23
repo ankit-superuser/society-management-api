@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SocietiesModule } from './societies/societies.module';
+import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 
 
 
@@ -27,6 +28,7 @@ import { SocietiesModule } from './societies/societies.module';
     RolesModule,
     DashboardModule,
     SocietiesModule,
+    SubscriptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
