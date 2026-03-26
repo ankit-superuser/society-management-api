@@ -1,9 +1,14 @@
+import 'dotenv/config';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: '*',
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -13,9 +18,6 @@ async function bootstrap() {
     }),
   );
 
-  const PORT = 3002; // change here if you want
-  await app.listen(PORT);
-
-  console.log(`Server running on http://localhost:${PORT}`);
+  await app.listen(3000);
 }
 bootstrap();
