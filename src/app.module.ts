@@ -13,13 +13,19 @@ import { DashboardModule } from './dashboard/dashboard.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db.whhmgsryqatotcluccof.supabase.co',
-      port: 5432,
-      username: 'postgres',
-      password: 'Ecommerce2439#29',
-      database: 'postgres',
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT) || 5432,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: false, // Set to false in production
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
     }),
     AuthModule,
     UsersModule,
