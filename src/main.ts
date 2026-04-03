@@ -5,13 +5,14 @@ import { AppModule } from './app.module';
 import * as express from 'express';
 
 const expressApp = express();
-let isReady = false;
+let app: any = null;
 
 async function bootstrap() {
-  const app = await NestFactory.create(
-    AppModule,
-    new ExpressAdapter(expressApp),
-  );
+  if (app) return;
+
+  app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp), {
+    logger: ['error', 'warn', 'log'],
+  });
 
   app.enableCors();
 
@@ -24,14 +25,10 @@ async function bootstrap() {
   );
 
   await app.init();
-  isReady = true;
 }
 
-const bootstrapPromise = bootstrap();
-
 export default async function handler(req: any, res: any) {
-  if (!isReady) {
-    await bootstrapPromise;
-  }
+  await bootstrap();
   expressApp(req, res);
-}
+}
+
