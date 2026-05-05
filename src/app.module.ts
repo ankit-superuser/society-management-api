@@ -18,11 +18,11 @@ import { LogsModule } from './logs/logs.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db.whhmgsryqatotcluccof.supabase.co',
-      port: 5432,
-      username: 'postgres',
-      password: 'Ecommerce2439#29',
-      database: 'postgres',
+      host: process.env.DB_HOST || 'db.whhmgsryqatotcluccof.supabase.co',
+      port: parseInt(process.env.DB_PORT) || 5432,
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'Ecommerce2439#29',
+      database: process.env.DB_NAME || 'postgres',
       autoLoadEntities: true,
       synchronize: false, // Set to false in production
     }),
