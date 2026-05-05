@@ -14,9 +14,9 @@ async function bootstrap() {
     }),
   );
 app.getHttpAdapter().getInstance().set('trust proxy', true);
-  const PORT = 3002; // change here if you want
+  const PORT = process.env.PORT || 3002;
   await app.listen(PORT);
 
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 }
 bootstrap();
