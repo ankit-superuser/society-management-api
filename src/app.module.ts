@@ -6,6 +6,11 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SocietiesModule } from './societies/societies.module';
+import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { RevenueModule } from './revenue/revenue.module';
+import { AnnouncementsModule } from './announcements/announcements.module';
+import { LogsModule } from './logs/logs.module';
 
 
 
@@ -25,6 +30,11 @@ import { DashboardModule } from './dashboard/dashboard.module';
     UsersModule,
     RolesModule,
     DashboardModule,
+    SocietiesModule,
+    SubscriptionsModule,
+    RevenueModule,
+    AnnouncementsModule,
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

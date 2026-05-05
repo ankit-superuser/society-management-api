@@ -10,9 +10,10 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      
     }),
   );
-
+app.getHttpAdapter().getInstance().set('trust proxy', true);
   const PORT = 3002; // change here if you want
   await app.listen(PORT);
 
